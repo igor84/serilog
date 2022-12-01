@@ -7,7 +7,7 @@ public class JsonFormatterTests
     [Fact]
     public void JsonFormattedEventsIncludeTimestamp()
     {
-        var @event = LogEvent.GetOrCreate(
+        using var @event = LogEvent.GetOrCreate(
             new DateTimeOffset(2013, 3, 11, 15, 59, 0, 123, TimeSpan.FromHours(10)),
             Information,
             null,
@@ -26,7 +26,7 @@ public class JsonFormatterTests
     [Fact]
     public void JsonFormattedDateOnly()
     {
-        var @event = LogEvent.GetOrCreate(
+        using var @event = LogEvent.GetOrCreate(
             DateTimeOffset.MaxValue,
             Information,
             null,
@@ -42,7 +42,7 @@ public class JsonFormatterTests
     [Fact]
     public void JsonFormattedTimeOnly()
     {
-        var @event = LogEvent.GetOrCreate(
+        using var @event = LogEvent.GetOrCreate(
             DateTimeOffset.MaxValue,
             Information,
             null,
@@ -202,7 +202,7 @@ public class JsonFormatterTests
     public void PropertyTokensWithFormatStringsAreIncludedAsRenderings()
     {
         var p = new MessageTemplateParser();
-        var e = LogEvent.GetOrCreate(Some.OffsetInstant(), Information, null,
+        using var e = LogEvent.GetOrCreate(Some.OffsetInstant(), Information, null,
             p.Parse("{AProperty:000}"), new[] { new LogEventProperty("AProperty", new ScalarValue(12)) });
 
         var d = FormatEvent(e);
@@ -230,7 +230,7 @@ public class JsonFormatterTests
     public void PropertyTokensWithoutFormatStringsAreNotIncludedAsRenderings()
     {
         var p = new MessageTemplateParser();
-        var e = LogEvent.GetOrCreate(Some.OffsetInstant(), Information, null,
+        using var e = LogEvent.GetOrCreate(Some.OffsetInstant(), Information, null,
             p.Parse("{AProperty}"), new[] { new LogEventProperty("AProperty", new ScalarValue(12)) });
 
         var d = FormatEvent(e);
@@ -243,7 +243,7 @@ public class JsonFormatterTests
     public void SequencesOfSequencesAreSerialized()
     {
         var p = new MessageTemplateParser();
-        var e = LogEvent.GetOrCreate(Some.OffsetInstant(), Information, null,
+        using var e = LogEvent.GetOrCreate(Some.OffsetInstant(), Information, null,
             p.Parse("{@AProperty}"), new[] { new LogEventProperty("AProperty", new SequenceValue(new[] { new SequenceValue(new[] { new ScalarValue("Hello") }) })) });
 
         var d = FormatEvent(e);

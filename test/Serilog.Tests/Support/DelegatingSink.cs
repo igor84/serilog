@@ -11,7 +11,7 @@ public class DelegatingSink : ILogEventSink
 
     public void Emit(LogEvent logEvent)
     {
-        _write(logEvent);
+        _write(logEvent.Copy());
     }
 
     public static LogEvent GetLogEvent(Action<ILogger> writeAction)

@@ -8,6 +8,6 @@ class CollectingEnricher : ILogEventEnricher
 
     public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
     {
-        Events.Add(logEvent);
+        Events.Add(logEvent.Copy());
     }
 }

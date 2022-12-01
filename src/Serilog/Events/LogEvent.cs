@@ -17,7 +17,7 @@ namespace Serilog.Events;
 /// <summary>
 /// A log event.
 /// </summary>
-public class LogEvent
+public class LogEvent : IDisposable
 {
     static readonly object _poolLock = new();
     static readonly Stack<LogEvent> _pool = new();
@@ -195,5 +195,18 @@ public class LogEvent
             result._properties.Add(key, _properties[key]);
 
         return result;
+    }
+
+    /// <summary>
+    /// Clears and returns this instance to the pool.
+    /// </summary>
+    public void Dispose()
+    {
+        Exception = null;
+        _properties.Clear();
+        lock (_poolLock)
+        {
+            _pool.Push(this);
+        }
     }
 }

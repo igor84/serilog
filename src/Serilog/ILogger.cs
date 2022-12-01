@@ -333,7 +333,8 @@ public interface ILogger
 
         if (BindMessageTemplate(messageTemplate, propertyValues, out var parsedTemplate, out var boundProperties))
         {
-            Write(LogEvent.GetOrCreate(DateTimeOffset.Now, level, exception, parsedTemplate, boundProperties));
+            using var logEvent = LogEvent.GetOrCreate(DateTimeOffset.Now, level, exception, parsedTemplate, boundProperties);
+            Write(logEvent);
         }
     }
 #else

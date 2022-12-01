@@ -8,6 +8,6 @@ class CollectingSink : ILogEventSink
 
     public void Emit(LogEvent logEvent)
     {
-        Events.Add(logEvent);
+        Events.Add(logEvent.Copy());
     }
 }
